@@ -53,10 +53,30 @@ export const ChatHeader = styled.div`
 `
 
 export const ChatBody = styled.div`
+    display: flex;
+    flex-direction: column;
     height:75vh;
     border-bottom: 1px solid #ccc;
     overflow-y: scroll;
     @media (max-width:770px){
         height:70vh;
     }
+`
+
+export const Me = styled.div`
+    background-color: #77cf6d;
+    width:max-content;
+    max-width:60%;
+    word-wrap: break-word;
+    font-size:1.2rem;
+    margin:1.4rem 1.5rem;
+    padding:1rem 0.7rem;
+    margin-left:auto;
+    border-radius:0.2rem;
+`
+
+export const Others = styled(Me)`
+    background-color: #1890ff;
+    margin-left:1.5rem;
+    margin-right:auto;
 `

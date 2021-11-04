@@ -1,5 +1,5 @@
 import React from "react";
-import {Route, Routes,BrowserRouter} from "react-router-dom";
+import {Route, Routes,HashRouter} from "react-router-dom";
 import Home from "./containers/Home/Home";
 import ChatInterface from "./components/ChatInterface/ChatInterface";
 import 'antd/dist/antd.css';
@@ -7,12 +7,12 @@ import 'antd/dist/antd.css';
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
+      <HashRouter >
         <Routes>
           <Route  path="/" element={<Home/>} />
           <Route  path="/chat/:room_name" element={<ChatInterface/>} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </div>
   );
 }

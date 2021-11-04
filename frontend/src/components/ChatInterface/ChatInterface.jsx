@@ -8,6 +8,8 @@ import {
   ChatPanel,
   ChatHeader,
   ChatBody,
+  Me,
+  Others
 } from "./ChatInterface.styles";
 import { Input } from 'antd';
 
@@ -15,7 +17,9 @@ const { Search } = Input;
 
 const ChatInterface = () => {
   const { room_name } = useParams();
-  const onSearch = value => console.log(value);
+  const onSend = (value) =>{
+    console.log(value);
+  } 
   return (
     <ChatWindow>
       <UsersInfo>
@@ -34,7 +38,14 @@ const ChatInterface = () => {
               : `${room_name.substring(0, 12)}...`}
           </h2>
         </ChatHeader>
-        <ChatBody></ChatBody>
+        <ChatBody >
+            <Me>
+                skkkkkkkkkkkkkkkkkkkkkkkkskksskkkkkkkkkkkkkkkkkkkkkkkkskksskkkkkkkkkkkkkkkkkkkkkkkkskksskkkkkkkkkkkkkkkkkkkkkkkkskks
+            </Me>
+            <Others>
+                skkkkkkkkkkkkkkkkkkkkkkkkskksskkkkkkkkkkkkkkkkkkkkkkkkskksskkkkkkkkkkkkkkkkkkkkkkkkskksskkkkkkkkkkkkkkkkkkkkkkkkskks
+            </Others>
+        </ChatBody>
         <br/>
         <div className="mb-0 mx-3">
           <Search
@@ -42,7 +53,7 @@ const ChatInterface = () => {
             allowClear
             enterButton="Send"
             size="large"
-            onSearch={onSearch}
+            onSearch={onSend}
           />
         </div>
       </ChatPanel>
