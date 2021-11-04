@@ -3,8 +3,6 @@ import {ChatContainer,TabPanel,Tab,Form} from './Chat.styles.jsx';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
-
-
 const Chat = () => {
     const [CurrentTab,setCurrentTab] = React.useState(0);
     return (
