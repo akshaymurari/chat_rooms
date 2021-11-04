@@ -4,3 +4,5 @@
 yarn.lock
 package.lock
 yarn-error.log
+docker-compose.yml
+.dockerignore
