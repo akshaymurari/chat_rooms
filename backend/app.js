@@ -46,42 +46,32 @@ const wss = new WebSocket.Server({ server });
 
 const getRoomData = require("./utils/getRoomData");
 
-const ws_router = require("./ws_router");
+const ws_router = require("./wsrouter");
 
-const {format} = require("date-fns");
+const {parse} = require("url");
 
-wss.on("connection", (ws) => {
+wss.on("connection", (ws,request) => {
     //store a channel name
-    var roomId = "";
+    var roomId = request.url.substring(1,request.url.length);
     ws.on("message", async (message) => {
         let msg = JSON.parse(message);
-        ws_router(ws,msg);
-        channel=msg.roomId;
-        // wss.clients.forEach((client) => {
-            //     if (client.readyState === WebSocket.OPEN && client !== ws) {
-                //         client.send(message);
-                //     }
-                // });
+        ws_router(ws,msg,roomId);
     });
 
-    ws.on("close", () =>{
-        client.unsubscribe();
-        client.quit();
-        publisher.quit();
-    });
+    // ws.on("close", () =>{
+    //     client.unsubscribe();
+    //     client.quit();
+    //     publisher.quit();
+    // });
 
-    client.on("message",(channel, message) => {
-        console.log(channel,roomId);
+    client.on("message",async (channel, message) => {
         if(channel === roomId){
             let msg = JSON.parse(message);
-            let date = format(new Date(), "yyyy-MM-dd HH:mm:ss");
-            msg.date=date;
-            ws.send(msg);
+            ws.send(JSON.stringify(msg));
         }
     });
 
 });
-        
 
 
 module.exports = {

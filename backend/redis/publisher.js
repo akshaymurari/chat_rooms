@@ -4,7 +4,7 @@ module.exports.publisher = null;
 
 module.exports.connect = () => {
         
-        const publisher = redis.createpublisher({
+        const publisher = redis.createClient({
                 host: process.env.redis_host,
                 port: 6379
         });

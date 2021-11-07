@@ -17,6 +17,8 @@ function App() {
   );
 }
 
-export const Baseurl = "http://localhost"
+export const Baseurl = "http://localhost";
+
+export const ws_url = "ws://localhost";
 
 export default App;

@@ -2,15 +2,21 @@ const {client} = require("./redis/connect");
 
 const {publisher} = require("./redis/publisher");
 
-const ws_router = async (ws,msg) => {
+const {format} = require("date-fns");
+
+
+const ws_router = async (ws,msg,roomId) => {
 
     switch(msg.type){
         case "get_room_data":
-            ws.send(JSON.stringify(await require("./utils/getRoomData")(msg)));
-            client.subscribe(msg.roomId);
+            ws.send(JSON.stringify(await require("./utils/getRoomData")(roomId)));
+            client.subscribe(roomId);
             break;
         case "send_message":
-            publisher.publish(msg.roomId,JSON.stringify(msg));
+            let date = format(new Date(), "yyyy-MM-dd HH:mm:ss");
+            msg.data.date=date;
+            publisher.publish(roomId,JSON.stringify(msg));
+            await require("./controllers/send_message")(roomId,msg);
             break;
     }
 }

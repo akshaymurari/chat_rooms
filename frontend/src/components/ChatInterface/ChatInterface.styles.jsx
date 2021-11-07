@@ -69,14 +69,50 @@ export const Me = styled.div`
     max-width:60%;
     word-wrap: break-word;
     font-size:1.2rem;
-    margin:1.4rem 1.5rem;
+    margin:0rem 1.5rem 1rem 1.5rem; 
     padding:1rem 0.7rem;
     margin-left:auto;
     border-radius:0.2rem;
+`
+
+export const MeDate = styled.div`
+    width:max-content;
+    max-width:60%;
+    word-wrap: break-word;
+    font-size:0.8rem;
+    margin:-1.4rem 1rem 0rem 0rem;
+    padding:1rem 0.7rem;
+    margin-left:auto;
+    border-radius:0.2rem;
+    font-weight:bold;
 `
 
 export const Others = styled(Me)`
     background-color: #1890ff;
     margin-left:1.5rem;
     margin-right:auto;
+`
+
+export const OthersDate = styled(Others)`
+    background-color: #fff;  
+    font-weight:bold;
+    padding:0;
+    margin: -0.7rem auto 0rem 1.4rem;
+    font-size:0.8rem;
+`
+
+export const MeName = styled(MeDate)`
+    margin: 0.6rem 1rem 0.4rem 0rem;
+    margin-left:auto;
+    padding:0;
+    font-weight:900;
+    font-size:1rem;
+`
+
+export const OthersName = styled(MeDate)`
+    margin: 0.6rem 0rem 0.6rem 1.4rem;
+    margin-right:auto;
+    padding:0;
+    font-weight:900;
+    font-size:1rem;
 `

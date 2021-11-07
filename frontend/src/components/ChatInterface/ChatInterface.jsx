@@ -8,18 +8,61 @@ import {
   ChatPanel,
   ChatHeader,
   ChatBody,
-  Me,
-  Others
+  Me,MeDate,
+  Others,OthersDate,
+  MeName,OthersName
 } from "./ChatInterface.styles";
 import { Input } from 'antd';
+import {ws_url} from "../../App";
+import { useNavigate } from "react-router-dom";
+import $ from "jquery";
 
 const { Search } = Input;
 
 const ChatInterface = () => {
+  const navigate = useNavigate();
+  const [data,setdata] = React.useState([]);
   const { room_name } = useParams();
+  const username = localStorage.getItem("username") || "Anonymous";
+  const ws = new WebSocket(`${ws_url}/${room_name}`);
   const onSend = (value) =>{
-    console.log(value);
+    ws.send(JSON.stringify({
+      type: "send_message",
+      data: {
+        username,
+        message: value
+      }
+    }));
   } 
+  React.useEffect(()=>{
+    ws.onopen = () => {
+      console.log("connected");
+      ws.send(JSON.stringify({
+        type: "get_room_data",
+      }));
+    };
+    ws.onmessage = (event) => {
+      let msg = JSON.parse(event.data);
+      console.log(msg);
+      if(msg===null){
+        alert("Room not found");
+        navigate("/");
+      }else if(msg.data==undefined){
+        setdata(msg.messages);
+      }
+      else{
+        setdata(pre=>{
+          return [...pre,msg.data];
+        });
+      }
+    };
+    ws.onclose = () => {
+      console.log("disconnected");
+    };
+    ws.onerror = (error) => {
+      console.log(error);
+    };
+  },[]);
   return (
     <ChatWindow>
       <UsersInfo>
@@ -39,18 +82,42 @@ const ChatInterface = () => {
           </h2>
         </ChatHeader>
         <ChatBody >
-            <Me>
-                skkkkkkkkkkkkkkkkkkkkkkkkskksskkkkkkkkkkkkkkkkkkkkkkkkskksskkkkkkkkkkkkkkkkkkkkkkkkskksskkkkkkkkkkkkkkkkkkkkkkkkskks
-            </Me>
-            <Others>
-                skkkkkkkkkkkkkkkkkkkkkkkkskksskkkkkkkkkkkkkkkkkkkkkkkkskksskkkkkkkkkkkkkkkkkkkkkkkkskksskkkkkkkkkkkkkkkkkkkkkkkkskks
-            </Others>
+          {
+            data.map((item)=>{
+              return (item.username===username)?(
+                <>
+                  <MeName>
+                    {item.username}
+                  </MeName>
+                  <Me>
+                      {item.message}
+                  </Me>
+                  <MeDate>
+                    {item.date}
+                  </MeDate>
+                </>
+              ):(
+                <>
+                  <OthersName>
+                    {item.username}
+                  </OthersName>
+                  <Others>
+                      {item.message}
+                  </Others>
+                  <OthersDate>
+                    {item.date}
+                  </OthersDate>
+                </>
+
+              )
+            })
+          }
         </ChatBody>
         <br/>
         <div className="mb-0 mx-3">
           <Search
+            id="message"
             placeholder="send a message ..."
-            allowClear
             enterButton="Send"
             size="large"
             onSearch={onSend}
