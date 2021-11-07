@@ -5,19 +5,15 @@ import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import {Baseurl} from "../../../App";
 import $ from 'jquery';
+import {useNavigate} from 'react-router-dom';
 
 const Chat = () => {
+    const Navigate = useNavigate();
     const [CurrentTab,setCurrentTab] = React.useState(0);
     const roomaction = async () => {
         if(CurrentTab===0){
-            const data = await axios({
-                method: 'get',
-                url: `${Baseurl}`,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            console.log(data);
+            localStorage.setItem('username',$('#username').val());
+            Navigate(`/chat/${$("#roomId").val()}`);
         }
         else if(CurrentTab===1){
             if($("#conformpassword").val()===$("#password").val()){
@@ -60,7 +56,6 @@ const Chat = () => {
                         'accept': 'application/json'
                     }
                 });
-                console.log(data);
                 if(data.data.status===200){
                     alert(`${data.data.message}`);
                 }else{
