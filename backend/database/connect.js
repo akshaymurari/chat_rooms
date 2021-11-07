@@ -1,16 +1,17 @@
 const mongoose = require('mongoose');
 
-// connect database with mongoose
+const mongo_url = `mongodb://${process.env.mongo_user}:${process.env.mongo_password}@${process.env.mongo_host}:${process.env.mongo_port}/chatrooms?authSource=admin`
 
-mongoose.connect('mongodb://localhost/test', {
+console.log(mongo_url);
+
+mongoose.connect(mongo_url, {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true
+    useUnifiedTopology: true
 });
 
 const db = mongoose.connection;
 
-db.on('error', console.log('connection error:'));
+db.on('error',(error)=>console.log('connection error:',error));
 
 db.once('open', function () {
     console.log('Connected to MongoDB');
@@ -22,5 +23,5 @@ db.on('reconnected', function () {
 
 db.on('disconnected', function () {
     console.log('MongoDB disconnected!');
-    mongoose.connect(config.connection_string);
+    mongoose.connect(mongo_url);
 });

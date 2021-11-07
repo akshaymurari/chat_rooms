@@ -17,4 +17,6 @@ function App() {
   );
 }
 
+export const Baseurl = "http://localhost"
+
 export default App;

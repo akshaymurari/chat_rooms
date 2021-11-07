@@ -3,6 +3,8 @@ import {ChatContainer,TabPanel,Tab,Form} from './Chat.styles.jsx';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
+import {Baseurl} from "../../../App";
+import $ from 'jquery';
 
 const Chat = () => {
     const [CurrentTab,setCurrentTab] = React.useState(0);
@@ -10,12 +12,63 @@ const Chat = () => {
         if(CurrentTab===0){
             const data = await axios({
                 method: 'get',
-                url: 'http://localhost/',
+                url: `${Baseurl}`,
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
             console.log(data);
+        }
+        else if(CurrentTab===1){
+            if($("#conformpassword").val()===$("#password").val()){
+                try{
+                    const data = await axios({
+                        method: 'post',
+                        url: `${Baseurl}/create_room`,
+                        data: {
+                            roomId: $("#roomId").val(),
+                            password: $("#password").val()
+                        },
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'accept': 'application/json'
+                        }
+                    });
+                    if(data.data.status===200){
+                        alert(`${data.data.message} roomId:${data.data.roomCreated.roomId} password:${data.data.roomCreated.password}`);
+                    }else{
+                        alert(`${data.data.message}`);
+                    }
+                }catch(err){
+                    alert("Room already exists");
+                }
+            }else{
+                alert("password and conformpassword not matched");
+            }
+        }
+        else{
+            try{
+                const data = await axios({
+                    method: 'delete',
+                    url: `${Baseurl}/delete_room`,
+                    data: {
+                        roomId: $("#roomId").val(),
+                        password: $("#password").val()
+                    },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'accept': 'application/json'
+                    }
+                });
+                console.log(data);
+                if(data.data.status===200){
+                    alert(`${data.data.message}`);
+                }else{
+                    alert(`${data.data.message}`);
+                }
+            }catch(err){
+                alert("invalid roomId or password");
+            }
         }
     }
     return (
@@ -62,9 +115,21 @@ const Chat = () => {
                 {
                     (CurrentTab===1||CurrentTab===2)?(
                         <>
-                            <TextField id="password" className="mb-2" label="password" variant="standard" />
+                            <TextField id="password" className="mb-2" type="password" label="password" variant="standard" />
                             <br/>
-                            <br/>
+                            {
+                                (CurrentTab===1)?(
+                                    <>
+                                        <TextField id="conformpassword" className="mb-2" type="password" label="conform password" variant="standard" />
+                                        <br/>
+                                        <br/>
+                                    </>
+                                ):(
+                                    <>
+                                        <br/>
+                                    </>
+                                )
+                            }
                         </>
                     ):(
                         <>

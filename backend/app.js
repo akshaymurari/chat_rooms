@@ -4,28 +4,28 @@ const app = express();
 
 const cors = require("cors");
 
-const bodyParser = require("body-parser");
-
 app.use(cors());
 
-app.use(express.json());
+app.enable("trust proxy");
+
+const bodyParser = require("body-parser");
 
 app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
+require("./database/connect");
+
+app.use(require("./router"));
+
 const port = process.env.PORT || 8000;
 
 app.listen(port, (err) => {
     if (err) {
-        console.log(err);
+        console.log("error",err);
     } else {
         console.log("Server is running on port ${port}");
     }
 });
 
-app.enable("trust proxy");
 
-app.get("/", (req, res) => {
-    return res.send("Hello World");
-});
