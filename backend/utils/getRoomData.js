@@ -5,7 +5,7 @@ const getRoomData = async (roomId) => {
         const roomData = await room.findOne({
             roomId
         }).select({"roomId":1,"createdAt":1,"messages":1});
-        console.log(roomData);
+        // console.log(roomData);
         return roomData;
     }catch(err){
         console.log(err);

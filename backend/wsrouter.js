@@ -18,6 +18,8 @@ const ws_router = async (ws,msg,roomId) => {
             publisher.publish(roomId,JSON.stringify(msg));
             await require("./controllers/send_message")(roomId,msg);
             break;
+        case "reconnect":
+            break;
     }
 }
 
